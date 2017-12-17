@@ -3,7 +3,6 @@ import GraphQL from '../GraphQL'
 import MongoDB from './Entity/MongoDB'
 import deepmerge from 'deepmerge'
 import {
-    diff,
     updatedDiff,
     addedDiff,
     deletedDiff
@@ -26,7 +25,7 @@ class GraphQLEntity extends Entity {
             [this.caseName('camel')]: Object.assign(
                 GraphQL.queryType(this.type, this.context),
                 {
-                    resolve(source, args, context) {
+                    resolve: (source, args, context) => {
                         this.context.forEach(
                             key =>
                                 context[key] = args[key]
@@ -38,7 +37,7 @@ class GraphQLEntity extends Entity {
             [this.casePluralName('camel')]: Object.assign(
                 GraphQL.queryListType(this.type, this.pluralName, this.context),
                 {
-                    resolve(source, args, context) {
+                    resolve: (source, args, context) => {
                         this.context.forEach(
                             key =>
                                 context[key] = args[key]
@@ -68,9 +67,9 @@ class GraphQLEntity extends Entity {
         if(this.validate)
             await this.validate(state, object, errors, context)
 
-        added = flatten(addedDiff(object, state))
-        updated = flatten(updatedDiff(object, state))
-        deleted = Object.keys(state).length ? flatten(deletedDiff(object, state)) : {}
+        let added = flatten(addedDiff(object, state)),
+            updated = flatten(updatedDiff(object, state)),
+            deleted = Object.keys(state).length ? flatten(deletedDiff(object, state)) : {}
 
         delete deleted._id
 
@@ -132,7 +131,7 @@ class GraphQLEntity extends Entity {
             [this.caseName('camel')]: Object.assign(
                 GraphQL.mutationType(this.type, this.context),
                 {
-                    resolve(source, args, context) {
+                    resolve: (source, args, context) => {
                         this.context.forEach(
                             key =>
                                 context[key] = args[key]

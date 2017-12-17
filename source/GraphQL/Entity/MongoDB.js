@@ -1,6 +1,9 @@
 import MongoDBEntity from '../../MongoDB/Entity'
-import GraphQLEntity from '../Entity'
 import mixin from 'mixin'
+import {
+    diff
+} from 'deep-object-diff'
+import objectPath from 'object-path'
 
 export default function(GraphQLEntity) {
     return class GraphQLMongoDBEntity extends mixin(MongoDBEntity, GraphQLEntity) {

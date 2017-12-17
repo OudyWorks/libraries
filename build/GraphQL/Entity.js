@@ -42,13 +42,13 @@ class GraphQLEntity extends _Entity2.default {
     static queries() {
         return {
             [this.caseName('camel')]: Object.assign(_GraphQL2.default.queryType(this.type, this.context), {
-                resolve(source, args, context) {
+                resolve: (source, args, context) => {
                     this.context.forEach(key => context[key] = args[key]);
                     return this.resolveLoad(args, context);
                 }
             }),
             [this.casePluralName('camel')]: Object.assign(_GraphQL2.default.queryListType(this.type, this.pluralName, this.context), {
-                resolve(source, args, context) {
+                resolve: (source, args, context) => {
                     this.context.forEach(key => context[key] = args[key]);
                     return this.resolveQuery(args, context);
                 }
@@ -72,9 +72,9 @@ class GraphQLEntity extends _Entity2.default {
 
         if (this.validate) await this.validate(state, object, errors, context);
 
-        added = (0, _flatten2.default)((0, _deepObjectDiff.addedDiff)(object, state));
-        updated = (0, _flatten2.default)((0, _deepObjectDiff.updatedDiff)(object, state));
-        deleted = Object.keys(state).length ? (0, _flatten2.default)((0, _deepObjectDiff.deletedDiff)(object, state)) : {};
+        let added = (0, _flatten2.default)((0, _deepObjectDiff.addedDiff)(object, state)),
+            updated = (0, _flatten2.default)((0, _deepObjectDiff.updatedDiff)(object, state)),
+            deleted = Object.keys(state).length ? (0, _flatten2.default)((0, _deepObjectDiff.deletedDiff)(object, state)) : {};
 
         delete deleted._id;
 
@@ -123,7 +123,7 @@ class GraphQLEntity extends _Entity2.default {
     static mutations() {
         return {
             [this.caseName('camel')]: Object.assign(_GraphQL2.default.mutationType(this.type, this.context), {
-                resolve(source, args, context) {
+                resolve: (source, args, context) => {
                     this.context.forEach(key => context[key] = args[key]);
                     return this.resolveMutation(args, context);
                 }

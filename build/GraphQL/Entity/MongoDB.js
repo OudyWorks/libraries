@@ -17,7 +17,7 @@ exports.default = function (GraphQLEntity) {
                     if (deleted[key] == undefined) {
                         if (key.match(/\.\d+$/)) {
                             if (!$pullAll[key.replace(/\.\d+$/, '')]) $pullAll[key.replace(/\.\d+$/, '')] = [];
-                            $pullAll[key.replace(/\.\d+$/, '')].push(objectPath.get(object, key));
+                            $pullAll[key.replace(/\.\d+$/, '')].push(_objectPath2.default.get(object, key));
                         } else $unset[key] = true;
                     }
                 });
@@ -26,7 +26,7 @@ exports.default = function (GraphQLEntity) {
                 $pullAll = Object.keys($pullAll).length ? $pullAll : undefined;
 
                 return [{ $set }, { $unset }, { $pullAll }];
-            } else return diff(object, state);
+            } else return (0, _deepObjectDiff.diff)(object, state);
         }
     };
 };
@@ -35,12 +35,14 @@ var _Entity = require('../../MongoDB/Entity');
 
 var _Entity2 = _interopRequireDefault(_Entity);
 
-var _Entity3 = require('../Entity');
-
-var _Entity4 = _interopRequireDefault(_Entity3);
-
 var _mixin = require('mixin');
 
 var _mixin2 = _interopRequireDefault(_mixin);
+
+var _deepObjectDiff = require('deep-object-diff');
+
+var _objectPath = require('object-path');
+
+var _objectPath2 = _interopRequireDefault(_objectPath);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
