@@ -99,14 +99,15 @@ class GraphQLEntity extends _Entity2.default {
                     payload,
                     [name]: state,
                     object,
-                    context
+                    context,
+                    changes
                 });
             } else _id = await this.insert({
                 payload,
-                collection: store,
-                store,
                 [name]: state,
-                context
+                object,
+                context,
+                changes
             });
         }
 
