@@ -68,7 +68,7 @@ class GraphQLEntity extends _Entity2.default {
 
         if (this.validateContext) await this.validateContext(context, errors);
 
-        let object = await this.resolveLoad(args, context);
+        let object = (await this.resolveLoad(args, context)) || {};
 
         if (this.validate) await this.validate(state, object, errors, context);
 
