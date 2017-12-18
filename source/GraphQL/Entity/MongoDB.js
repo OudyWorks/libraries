@@ -11,29 +11,27 @@ const arrayMerge = (target, source, optionsArgument) => {
 
 export default function(GraphQLEntity) {
     return class GraphQLMongoDBEntity extends mixin(MongoDBEntity, GraphQLEntity) {
-        static resolveLoad(args, context) {
+        static resolveLoad(id, context) {
             let collection
             if(this.context[0])
                 collection = context[this.context[0]]
-            return this.load(args.id, collection)
+            return this.load(id, collection)
         }
-        static resolveQuery(args, context) {
+        static resolveQuery(query, context) {
             let collection
             if(this.context[0])
                 collection = context[this.context[0]]
-            return this.query(args, collection)
+            return this.query(query, collection)
         }
         static resolveUpdate(update, context) {
-            let collection
             if(this.context[0])
-                collection = context[this.context[0]]
-            return this.update(update, collection)
+                update.collection = context[this.context[0]]
+            return this.update(update)
         }
         static resolveInsert(insert, context) {
-            let collection
             if(this.context[0])
-                collection = context[this.context[0]]
-            return this.insert(insert, collection)
+                insert.collection = context[this.context[0]]
+            return this.insert(insert)
         }
         static async buildPayload({added, updated, deleted, object, state}) {
             if(object._id) {

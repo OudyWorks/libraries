@@ -6,25 +6,23 @@ Object.defineProperty(exports, "__esModule", {
 
 exports.default = function (GraphQLEntity) {
     return class GraphQLMongoDBEntity extends (0, _mixin2.default)(_Entity2.default, GraphQLEntity) {
-        static resolveLoad(args, context) {
+        static resolveLoad(id, context) {
             let collection;
             if (this.context[0]) collection = context[this.context[0]];
-            return this.load(args.id, collection);
+            return this.load(id, collection);
         }
-        static resolveQuery(args, context) {
+        static resolveQuery(query, context) {
             let collection;
             if (this.context[0]) collection = context[this.context[0]];
-            return this.query(args, collection);
+            return this.query(query, collection);
         }
         static resolveUpdate(update, context) {
-            let collection;
-            if (this.context[0]) collection = context[this.context[0]];
-            return this.update(update, collection);
+            if (this.context[0]) update.collection = context[this.context[0]];
+            return this.update(update);
         }
         static resolveInsert(insert, context) {
-            let collection;
-            if (this.context[0]) collection = context[this.context[0]];
-            return this.insert(insert, collection);
+            if (this.context[0]) insert.collection = context[this.context[0]];
+            return this.insert(insert);
         }
         static async buildPayload({ added, updated, deleted, object, state }) {
             if (object._id) {
