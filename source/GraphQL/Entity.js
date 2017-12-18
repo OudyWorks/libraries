@@ -14,18 +14,6 @@ const arrayMerge = (target, source, optionsArgument) => {
 }
 
 class GraphQLEntity extends Entity {
-    static resolveLoad(args, context) {
-        let collection
-        if(this.context[0])
-            collection = context[this.context[0]]
-        return this.load(args.id, collection)
-    }
-    static resolveQuery(args, context) {
-        let collection
-        if(this.context[0])
-            collection = context[this.context[0]]
-        return this.query(args, collection)
-    }
     static queries() {
         return {
             [this.caseName('camel')]: Object.assign(
@@ -97,22 +85,28 @@ class GraphQLEntity extends Entity {
                 )
 
             if(object._id) {
-                await this.update({
-                    id: object._id,
-                    payload,
-                    [name]: state,
-                    object,
-                    context,
-                    changes
-                })
+                await this.resolveUpdate(
+                    {
+                        id: object._id,
+                        payload,
+                        [name]: state,
+                        object,
+                        context,
+                        changes
+                    },
+                    context
+                )
             } else
-                _id = await this.insert({
-                    payload,
-                    [name]: state,
-                    object,
-                    context,
-                    changes
-                })
+                _id = await this.resolveInsert(
+                    {
+                        payload,
+                        [name]: state,
+                        object,
+                        context,
+                        changes
+                    },
+                    context
+                )
 
         }
 

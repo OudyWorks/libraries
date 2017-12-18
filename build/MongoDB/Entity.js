@@ -60,7 +60,7 @@ class MongoDBEntity extends _Entity2.default {
         update.collection = this.getCollection(update.collection);
         return _Batch2.default.update(update.id, update.payload, update.collection, update.database).then(() => {
             this.emit('update', Object.assign({}, update));
-            this.emit('save', Object.assign({}, insert, {
+            this.emit('save', Object.assign({}, update, {
                 update: false
             }));
             return this.clear(update.id);

@@ -33,16 +33,6 @@ const arrayMerge = (target, source, optionsArgument) => {
 };
 
 class GraphQLEntity extends _Entity2.default {
-    static resolveLoad(args, context) {
-        let collection;
-        if (this.context[0]) collection = context[this.context[0]];
-        return this.load(args.id, collection);
-    }
-    static resolveQuery(args, context) {
-        let collection;
-        if (this.context[0]) collection = context[this.context[0]];
-        return this.query(args, collection);
-    }
     static queries() {
         return {
             [this.caseName('camel')]: Object.assign(_GraphQL2.default.queryType(this.type, this.context), {
@@ -98,21 +88,21 @@ class GraphQLEntity extends _Entity2.default {
             });
 
             if (object._id) {
-                await this.update({
+                await this.resolveUpdate({
                     id: object._id,
                     payload,
                     [name]: state,
                     object,
                     context,
                     changes
-                });
-            } else _id = await this.insert({
+                }, context);
+            } else _id = await this.resolveInsert({
                 payload,
                 [name]: state,
                 object,
                 context,
                 changes
-            });
+            }, context);
         }
 
         return {

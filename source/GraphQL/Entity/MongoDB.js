@@ -5,8 +5,36 @@ import {
 } from 'deep-object-diff'
 import objectPath from 'object-path'
 
+const arrayMerge = (target, source, optionsArgument) => {
+    return source
+}
+
 export default function(GraphQLEntity) {
     return class GraphQLMongoDBEntity extends mixin(MongoDBEntity, GraphQLEntity) {
+        static resolveLoad(args, context) {
+            let collection
+            if(this.context[0])
+                collection = context[this.context[0]]
+            return this.load(args.id, collection)
+        }
+        static resolveQuery(args, context) {
+            let collection
+            if(this.context[0])
+                collection = context[this.context[0]]
+            return this.query(args, collection)
+        }
+        static resolveUpdate(update, context) {
+            let collection
+            if(this.context[0])
+                collection = context[this.context[0]]
+            return this.update(update, collection)
+        }
+        static resolveInsert(insert, context) {
+            let collection
+            if(this.context[0])
+                collection = context[this.context[0]]
+            return this.insert(insert, collection)
+        }
         static async buildPayload({added, updated, deleted, object, state}) {
             if(object._id) {
     

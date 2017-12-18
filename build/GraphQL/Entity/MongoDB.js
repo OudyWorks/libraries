@@ -6,6 +6,26 @@ Object.defineProperty(exports, "__esModule", {
 
 exports.default = function (GraphQLEntity) {
     return class GraphQLMongoDBEntity extends (0, _mixin2.default)(_Entity2.default, GraphQLEntity) {
+        static resolveLoad(args, context) {
+            let collection;
+            if (this.context[0]) collection = context[this.context[0]];
+            return this.load(args.id, collection);
+        }
+        static resolveQuery(args, context) {
+            let collection;
+            if (this.context[0]) collection = context[this.context[0]];
+            return this.query(args, collection);
+        }
+        static resolveUpdate(update, context) {
+            let collection;
+            if (this.context[0]) collection = context[this.context[0]];
+            return this.update(update, collection);
+        }
+        static resolveInsert(insert, context) {
+            let collection;
+            if (this.context[0]) collection = context[this.context[0]];
+            return this.insert(insert, collection);
+        }
         static async buildPayload({ added, updated, deleted, object, state }) {
             if (object._id) {
 
@@ -46,3 +66,7 @@ var _objectPath = require('object-path');
 var _objectPath2 = _interopRequireDefault(_objectPath);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const arrayMerge = (target, source, optionsArgument) => {
+    return source;
+};

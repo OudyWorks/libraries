@@ -74,7 +74,7 @@ class MongoDBEntity extends Entity {
                     'save',
                     Object.assign(
                         {},
-                        insert,
+                        update,
                         {
                             update: false
                         }
