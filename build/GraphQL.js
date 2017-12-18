@@ -38,6 +38,7 @@ class GraphQL {
                     };
                     break;
                 case 'GraphQLEnumType':
+                case 'GraphQLUnionType':
                     fields[key] = {
                         type: _graphql.GraphQLString
                     };
@@ -82,6 +83,7 @@ class GraphQL {
             switch (type.constructor.name) {
                 case 'GraphQLScalarType':
                 case 'GraphQLEnumType':
+                case 'GraphQLUnionType':
                     fields[key] = {
                         type: _graphql.GraphQLString
                     };

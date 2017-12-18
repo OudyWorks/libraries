@@ -40,6 +40,7 @@ export default class GraphQL {
                         }
                         break
                     case 'GraphQLEnumType':
+                    case 'GraphQLUnionType':
                         fields[key] = {
                             type: GraphQLString
                         }
@@ -97,6 +98,7 @@ export default class GraphQL {
                 switch(type.constructor.name) {
                     case 'GraphQLScalarType':
                     case 'GraphQLEnumType':
+                    case 'GraphQLUnionType':
                         fields[key] = {
                             type: GraphQLString
                         }
