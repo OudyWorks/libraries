@@ -60,6 +60,8 @@ class GraphQLEntity extends _Entity2.default {
             payload = {},
             _id;
 
+        this.context.forEach(key => context[key] = args[key]);
+
         if (this.validateContext) await this.validateContext(context, errors);
 
         let object = (await this.resolveLoad(args, context)) || {};

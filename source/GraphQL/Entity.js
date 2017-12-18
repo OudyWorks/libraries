@@ -53,6 +53,11 @@ class GraphQLEntity extends Entity {
             payload = {},
             _id
 
+        this.context.forEach(
+            key =>
+                context[key] = args[key]
+        )
+
         if(this.validateContext)
             await this.validateContext(context, errors)
             
