@@ -1,10 +1,11 @@
 import EventEmitter from 'events'
 import plural from 'plural'
 import Case from 'case'
+import Redis from './Redis'
 
 const emitter = new EventEmitter()
 
-export default class Entity {
+class Entity {
     // Events
     static on() {
         emitter.on.apply(this, arguments)
@@ -28,3 +29,58 @@ export default class Entity {
         return Case[_case](this.pluralName)
     }
 }
+
+
+
+Entity.getRedisKey = function(key, state) {
+    return `${state.collection}`+(key == 'id' ? '' : `:${key}`)
+}
+
+Entity.__defineSetter__(
+    'redisRefs',
+    function(refs) {
+        this._redisRefs = refs
+        this.redisRefs.forEach(
+            key => {
+                if(key == 'id')
+                    this.on(
+                        'new',
+                        state => {
+                            Redis.batch.sadd(
+                                this.getRedisKey(key, state),
+                                `${state.id}`
+                            )
+                        }
+                    )
+                else
+                    this.on(
+                        'save',
+                        async update => {
+                            if(update.changes && update.changes.includes(key)) {
+                                if(update.object && update.object[key])
+                                    await Redis.batch.hdel(
+                                        this.getRedisKey(key, state),
+                                        update.object[key]
+                                    )
+                                if(update[this.caseName('lower')] && update[this.caseName('lower')][key])
+                                    await Redis.batch.hset(
+                                        this.getRedisKey(key, state),
+                                        update[this.caseName('lower')][key],
+                                        `${update.id}`
+                                    )
+                            }
+                        }
+                    )
+            }
+        )
+    }
+)
+
+Entity.__defineGetter__(
+    'redisRefs',
+    function(refs) {
+        return this._redisRefs
+    }
+)
+
+export default Entity

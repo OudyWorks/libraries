@@ -8,10 +8,6 @@ var _Entity = require('../Entity');
 
 var _Entity2 = _interopRequireDefault(_Entity);
 
-var _Redis = require('../Redis');
-
-var _Redis2 = _interopRequireDefault(_Redis);
-
 var _Batch = require('./Batch');
 
 var _Batch2 = _interopRequireDefault(_Batch);
@@ -78,28 +74,6 @@ MongoDBEntity.__defineSetter__('collection', function (collection) {
 
 MongoDBEntity.__defineGetter__('collection', function (collection) {
     return this._collection || this.pluralName.toLowerCase();
-});
-
-MongoDBEntity.getRedisKey = function (key, state) {
-    return `${state.collection}` + (key == 'id' ? '' : `:${key}`);
-};
-
-MongoDBEntity.__defineSetter__('redisRefs', function (refs) {
-    this._redisRefs = refs;
-    this.redisRefs.forEach(key => {
-        if (key == 'id') this.on('new', state => {
-            _Redis2.default.batch.sadd(this.getRedisKey(key, state), `${state.id}`);
-        });else this.on('save', async update => {
-            if (update.changes && update.changes.includes(key)) {
-                if (update.object && update.object[key]) await _Redis2.default.batch.hdel(this.getRedisKey(key, state), update.object[key]);
-                if (update[this.caseName('lower')] && update[this.caseName('lower')][key]) await _Redis2.default.batch.hset(this.getRedisKey(key, state), update[this.caseName('lower')][key], `${update.id}`);
-            }
-        });
-    });
-});
-
-MongoDBEntity.__defineGetter__('redisRefs', function (refs) {
-    return this._redisRefs;
 });
 
 exports.default = MongoDBEntity;

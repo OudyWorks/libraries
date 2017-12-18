@@ -34,10 +34,14 @@ const arrayMerge = (target, source, optionsArgument) => {
 
 class GraphQLEntity extends _Entity2.default {
     static resolveLoad(args, context) {
-        return this.load(args.id);
+        let collection;
+        if (this.context[0]) collection = context[this.context[0]];
+        return this.load(args.id, collection);
     }
     static resolveQuery(args, context) {
-        return this.query(args);
+        let collection;
+        if (this.context[0]) collection = context[this.context[0]];
+        return this.query(args, collection);
     }
     static queries() {
         return {
