@@ -1,5 +1,6 @@
 import MongoDBEntity from '../../MongoDB/Entity'
 import mixin from 'mixin'
+import deepmerge from 'deepmerge'
 import {
     diff
 } from 'deep-object-diff'

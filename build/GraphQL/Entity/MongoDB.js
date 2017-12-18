@@ -27,7 +27,7 @@ exports.default = function (GraphQLEntity) {
         static async buildPayload({ added, updated, deleted, object, state }) {
             if (object._id) {
 
-                let $set = deepmerge(added, updated, { arrayMerge }),
+                let $set = (0, _deepmerge2.default)(added, updated, { arrayMerge }),
                     $unset = {},
                     $pullAll = {};
 
@@ -56,6 +56,10 @@ var _Entity2 = _interopRequireDefault(_Entity);
 var _mixin = require('mixin');
 
 var _mixin2 = _interopRequireDefault(_mixin);
+
+var _deepmerge = require('deepmerge');
+
+var _deepmerge2 = _interopRequireDefault(_deepmerge);
 
 var _deepObjectDiff = require('deep-object-diff');
 
