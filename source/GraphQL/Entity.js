@@ -24,7 +24,7 @@ class GraphQLEntity extends Entity {
                             key =>
                                 context[key] = args[key]
                         )
-                        return this.resolveLoad(args, context)
+                        return this.resolveLoad(args.id, context)
                     }
                 }
             ),

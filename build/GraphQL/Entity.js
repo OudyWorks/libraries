@@ -38,7 +38,7 @@ class GraphQLEntity extends _Entity2.default {
             [this.caseName('camel')]: Object.assign(_GraphQL2.default.queryType(this.type, this.context), {
                 resolve: (source, args, context) => {
                     this.context.forEach(key => context[key] = args[key]);
-                    return this.resolveLoad(args, context);
+                    return this.resolveLoad(args.id, context);
                 }
             }),
             [this.casePluralName('camel')]: Object.assign(_GraphQL2.default.queryListType(this.type, this.pluralName, this.context), {
