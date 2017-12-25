@@ -39,10 +39,10 @@ Entity.__defineSetter__(
                 if(key == 'id')
                     this.on(
                         'new',
-                        state => {
+                        insert => {
                             Redis.batch.sadd(
-                                this.getRedisKey(key, state),
-                                `${state.id}`
+                                this.getRedisKey(key, insert.context),
+                                `${insert.id}`
                             )
                         }
                     )
@@ -53,12 +53,12 @@ Entity.__defineSetter__(
                             if(update.changes && update.changes.includes(key)) {
                                 if(update.object && update.object[key])
                                     await Redis.batch.hdel(
-                                        this.getRedisKey(key, state),
+                                        this.getRedisKey(key, update.context),
                                         update.object[key]
                                     )
                                 if(update[this.caseName('lower')] && update[this.caseName('lower')][key])
                                     await Redis.batch.hset(
-                                        this.getRedisKey(key, state),
+                                        this.getRedisKey(key, update.context),
                                         update[this.caseName('lower')][key],
                                         `${update.id}`
                                     )

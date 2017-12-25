@@ -52,12 +52,12 @@ class Entity {
 Entity.__defineSetter__('redisRefs', function (refs) {
     this._redisRefs = refs;
     this.redisRefs.forEach(key => {
-        if (key == 'id') this.on('new', state => {
-            _Redis2.default.batch.sadd(this.getRedisKey(key, state), `${state.id}`);
+        if (key == 'id') this.on('new', insert => {
+            _Redis2.default.batch.sadd(this.getRedisKey(key, insert.context), `${insert.id}`);
         });else this.on('save', async update => {
             if (update.changes && update.changes.includes(key)) {
-                if (update.object && update.object[key]) await _Redis2.default.batch.hdel(this.getRedisKey(key, state), update.object[key]);
-                if (update[this.caseName('lower')] && update[this.caseName('lower')][key]) await _Redis2.default.batch.hset(this.getRedisKey(key, state), update[this.caseName('lower')][key], `${update.id}`);
+                if (update.object && update.object[key]) await _Redis2.default.batch.hdel(this.getRedisKey(key, update.context), update.object[key]);
+                if (update[this.caseName('lower')] && update[this.caseName('lower')][key]) await _Redis2.default.batch.hset(this.getRedisKey(key, update.context), update[this.caseName('lower')][key], `${update.id}`);
             }
         });
     });
