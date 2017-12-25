@@ -12,7 +12,7 @@ exports.default = function (GraphQLEntity) {
             return `${this.getCollection(collection)}` + (key == 'id' ? '' : `:${key}`);
         }
         static isExistInRedis(id, ref = 'id', context) {
-            return ref == 'id' ? _Redis2.default.batch.hget(this.getRedisKey(ref, context), `${id}`) : _Redis2.default.batch.sismember(this.getRedisKey(ref, context), `${id}`);
+            return ref != 'id' ? _Redis2.default.batch.hget(this.getRedisKey(ref, context), `${id}`) : _Redis2.default.batch.sismember(this.getRedisKey(ref, context), `${id}`);
         }
         static resolveLoad(id, context) {
             let collection;

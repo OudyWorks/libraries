@@ -20,7 +20,7 @@ export default function(GraphQLEntity) {
             return `${this.getCollection(collection)}`+(key == 'id' ? '' : `:${key}`)
         }
         static isExistInRedis(id, ref = 'id', context) {
-            return ref == 'id' ?
+            return ref != 'id' ?
                 Redis.batch.hget(this.getRedisKey(ref, context), `${id}`)
                 :
                 Redis.batch.sismember(this.getRedisKey(ref, context), `${id}`)
