@@ -6,6 +6,14 @@ Object.defineProperty(exports, "__esModule", {
 
 exports.default = function (GraphQLEntity) {
     return class GraphQLMongoDBEntity extends (0, _mixin2.default)(_Entity2.default, GraphQLEntity) {
+        static getRedisKey(key, context) {
+            let collection;
+            if (this.context[0]) collection = context[this.context[0]];
+            return `${this.getCollection(collection)}` + (key == 'id' ? '' : `:${key}`);
+        }
+        static isExistInRedis(id, ref = 'id', context) {
+            return ref == 'id' ? _Redis2.default.batch.hget(this.getRedisKey(ref, context), `${id}`) : _Redis2.default.batch.sismember(this.getRedisKey(ref, context), `${id}`);
+        }
         static resolveLoad(id, context) {
             let collection;
             if (this.context[0]) collection = context[this.context[0]];
@@ -66,6 +74,10 @@ var _deepObjectDiff = require('deep-object-diff');
 var _objectPath = require('object-path');
 
 var _objectPath2 = _interopRequireDefault(_objectPath);
+
+var _Redis = require('../../Redis');
+
+var _Redis2 = _interopRequireDefault(_Redis);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

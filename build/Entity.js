@@ -49,10 +49,6 @@ class Entity {
     }
 }
 
-Entity.getRedisKey = function (key, state) {
-    return `${state.collection}` + (key == 'id' ? '' : `:${key}`);
-};
-
 Entity.__defineSetter__('redisRefs', function (refs) {
     this._redisRefs = refs;
     this.redisRefs.forEach(key => {

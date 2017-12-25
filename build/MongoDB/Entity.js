@@ -12,6 +12,10 @@ var _Batch = require('./Batch');
 
 var _Batch2 = _interopRequireDefault(_Batch);
 
+var _Redis = require('../Redis');
+
+var _Redis2 = _interopRequireDefault(_Redis);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class MongoDBEntity extends _Entity2.default {
@@ -75,5 +79,13 @@ MongoDBEntity.__defineSetter__('collection', function (collection) {
 MongoDBEntity.__defineGetter__('collection', function (collection) {
     return this._collection || this.pluralName.toLowerCase();
 });
+
+MongoDBEntity.getRedisKey = function (key, collection = '') {
+    return `${this.getCollection(collection)}` + (key == 'id' ? '' : `:${key}`);
+};
+
+MongoDBEntity.isExistInRedis = function (id, ref = '', collection = '') {
+    return ref ? _Redis2.default.batch.hget(this.getRedisKey(ref, collection), `${id}`) : _Redis2.default.batch.sismember(this.getRedisKey(ref, collection), `${id}`);
+};
 
 exports.default = MongoDBEntity;

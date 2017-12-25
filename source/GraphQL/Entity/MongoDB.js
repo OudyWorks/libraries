@@ -5,6 +5,7 @@ import {
     diff
 } from 'deep-object-diff'
 import objectPath from 'object-path'
+import Redis from '../../Redis'
 
 const arrayMerge = (target, source, optionsArgument) => {
     return source
@@ -12,6 +13,18 @@ const arrayMerge = (target, source, optionsArgument) => {
 
 export default function(GraphQLEntity) {
     return class GraphQLMongoDBEntity extends mixin(MongoDBEntity, GraphQLEntity) {
+        static getRedisKey(key, context) {
+            let collection
+            if(this.context[0])
+                collection = context[this.context[0]]
+            return `${this.getCollection(collection)}`+(key == 'id' ? '' : `:${key}`)
+        }
+        static isExistInRedis(id, ref = 'id', context) {
+            return ref == 'id' ?
+                Redis.batch.hget(this.getRedisKey(ref, context), `${id}`)
+                :
+                Redis.batch.sismember(this.getRedisKey(ref, context), `${id}`)
+        }
         static resolveLoad(id, context) {
             let collection
             if(this.context[0])

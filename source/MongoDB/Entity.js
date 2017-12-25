@@ -1,5 +1,6 @@
 import Entity from '../Entity'
 import Batch from './Batch'
+import Redis from '../Redis'
 
 class MongoDBEntity extends Entity {
     static getCollection(collection) {
@@ -99,5 +100,16 @@ MongoDBEntity.__defineGetter__(
         return this._collection || this.pluralName.toLowerCase()
     }
 )
+
+MongoDBEntity.getRedisKey = function(key, collection = '') {
+    return `${this.getCollection(collection)}`+(key == 'id' ? '' : `:${key}`)
+}
+
+MongoDBEntity.isExistInRedis = function(id, ref = '', collection = '') {
+    return ref ?
+        Redis.batch.hget(this.getRedisKey(ref, collection), `${id}`)
+        :
+        Redis.batch.sismember(this.getRedisKey(ref, collection), `${id}`)
+}
 
 export default MongoDBEntity
