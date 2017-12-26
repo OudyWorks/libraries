@@ -58,7 +58,7 @@ class GraphQLEntity extends _Entity2.default {
             changed = false,
             changes = [],
             payload = {},
-            _id;
+            _id = '';
 
         if (this.validateContext) await this.validateContext(context, errors);
 
