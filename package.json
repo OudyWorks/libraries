@@ -1,6 +1,6 @@
 {
   "name": "@oudyworks/libraries",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Libraries we use in our projects",
   "main": "build/index.js",
   "scripts": {
