@@ -60,14 +60,12 @@ class MongoDBEntity extends _Entity2.default {
         });
     }
     static update(update) {
-        update.database = this.getDatabase(update.database);
-        update.collection = this.getCollection(update.collection);
-        return _Batch2.default.update(update.id, update.payload, update.collection, update.database).then(() => {
+        return _Batch2.default.update(update.id, update.payload, this.getCollection(update.collection), this.getDatabase(update.database)).then(() => {
             this.emit('update', Object.assign({}, update));
             this.emit('save', Object.assign({}, update, {
                 update: false
             }));
-            return this.clear(update.id);
+            return this.clear(update.id, update.collection, update.database);
         });
     }
 }

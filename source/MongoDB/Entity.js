@@ -60,9 +60,7 @@ class MongoDBEntity extends Entity {
         )
     }
     static update(update) {
-        update.database = this.getDatabase(update.database)
-        update.collection = this.getCollection(update.collection)
-        return Batch.update(update.id, update.payload, update.collection, update.database).then(
+        return Batch.update(update.id, update.payload, this.getCollection(update.collection), this.getDatabase(update.database)).then(
             () => {
                 this.emit(
                     'update',
@@ -81,7 +79,7 @@ class MongoDBEntity extends Entity {
                         }
                     )
                 )
-                return this.clear(update.id)
+                return this.clear(update.id, update.collection, update.database)
             }
         )
     }
