@@ -45,6 +45,11 @@ class MongoDBEntity extends _Entity2.default {
         collection = this.getCollection(collection);
         return _Batch2.default.query(query, collection, database);
     }
+    static count(query, collection, database) {
+        database = this.getDatabase(database);
+        collection = this.getCollection(collection);
+        return _Batch2.default.count(query, collection, database);
+    }
     static insert(insert) {
         insert.database = this.getDatabase(insert.database);
         insert.collection = this.getCollection(insert.collection);

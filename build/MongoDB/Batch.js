@@ -60,6 +60,14 @@ class Batch {
                 });
                 break;
 
+            case 'count':
+                loaders[key][database][collection] = new _dataloader2.default(keys => {
+                    return Promise.all(keys.map(async query => _MongoDB2.default.getDatabase(database).collection(collection).count(query)));
+                }, {
+                    cache: false
+                });
+                break;
+
             case 'insert':
 
                 loaders[key][database][collection] = new _dataloader2.default(async keys => {
@@ -111,6 +119,10 @@ class Batch {
     static query(query, collection, database = 'default') {
 
         return this.loader('query', collection, database).then(loader => loader.load(query || {}));
+    }
+    static count(query, collection, database = 'default') {
+
+        return this.loader('count', collection, database).then(loader => loader.load(query || {}));
     }
     static insert(object, collection, database = 'default') {
 

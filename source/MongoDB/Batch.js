@@ -78,6 +78,22 @@ export default class Batch {
                     )
                     break
 
+                case 'count':
+                    loaders[key][database][collection] = new DataLoader(
+                        keys => {
+                            return Promise.all(
+                                keys.map(
+                                    async query =>
+                                        MongoDB.getDatabase(database).collection(collection).count(query)
+                                )
+                            )
+                        },
+                        {
+                            cache: false
+                        }
+                    )
+                    break
+
                     case 'insert':
 
                         loaders[key][database][collection] = new DataLoader(
@@ -160,6 +176,14 @@ export default class Batch {
     static query(query, collection, database = 'default') {
 
         return this.loader('query', collection, database).then(
+            loader =>
+                loader.load(query || {})
+        )
+
+    }
+    static count(query, collection, database = 'default') {
+
+        return this.loader('count', collection, database).then(
             loader =>
                 loader.load(query || {})
         )

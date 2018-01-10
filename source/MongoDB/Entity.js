@@ -29,6 +29,11 @@ class MongoDBEntity extends Entity {
         collection = this.getCollection(collection)
         return Batch.query(query, collection, database)
     }
+    static count(query, collection, database) {
+        database = this.getDatabase(database)
+        collection = this.getCollection(collection)
+        return Batch.count(query, collection, database)
+    }
     static insert(insert) {
         insert.database = this.getDatabase(insert.database)
         insert.collection = this.getCollection(insert.collection)
