@@ -31,6 +31,15 @@ Object.defineProperty(exports, 'Redis', {
   }
 });
 
+var _RabbitMQ = require('./RabbitMQ');
+
+Object.defineProperty(exports, 'RabbitMQ', {
+  enumerable: true,
+  get: function () {
+    return _interopRequireDefault(_RabbitMQ).default;
+  }
+});
+
 var _Entity = require('./Entity');
 
 Object.defineProperty(exports, 'Entity', {
@@ -46,6 +55,15 @@ Object.defineProperty(exports, 'GraphQL', {
   enumerable: true,
   get: function () {
     return _interopRequireDefault(_GraphQL).default;
+  }
+});
+
+var _flatten = require('./flatten');
+
+Object.defineProperty(exports, 'flatten', {
+  enumerable: true,
+  get: function () {
+    return _interopRequireDefault(_flatten).default;
   }
 });
 
