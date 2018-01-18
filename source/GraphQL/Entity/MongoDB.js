@@ -13,7 +13,7 @@ const arrayMerge = (target, source, optionsArgument) => {
 
 export default function(GraphQLEntity) {
     return class GraphQLMongoDBEntity extends mixin(MongoDBEntity, GraphQLEntity) {
-        static getRedisKey(key, context) {
+        static getRedisKey(key = 'id', context) {
             let collection
             if(this.context[0])
                 collection = context[this.context[0]]

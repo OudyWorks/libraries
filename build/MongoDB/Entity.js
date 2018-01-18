@@ -87,8 +87,8 @@ MongoDBEntity.getRedisKey = function (key, collection = '') {
     return `${this.getCollection(collection)}` + (key == 'id' ? '' : `:${key}`);
 };
 
-MongoDBEntity.isExistInRedis = function (id, ref = '', collection = '') {
-    return ref ? _Redis2.default.batch.hget(this.getRedisKey(ref, collection), `${id}`) : _Redis2.default.batch.sismember(this.getRedisKey(ref, collection), `${id}`);
+MongoDBEntity.isExistInRedis = function (id, ref = 'id', collection = '') {
+    return ref != 'id' ? _Redis2.default.batch.hget(this.getRedisKey(ref, collection), `${id}`) : _Redis2.default.batch.sismember(this.getRedisKey(ref, collection), `${id}`);
 };
 
 exports.default = MongoDBEntity;

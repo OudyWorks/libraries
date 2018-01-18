@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 
 exports.default = function (GraphQLEntity) {
     return class GraphQLMongoDBEntity extends (0, _mixin2.default)(_Entity2.default, GraphQLEntity) {
-        static getRedisKey(key, context) {
+        static getRedisKey(key = 'id', context) {
             let collection;
             if (this.context[0]) collection = context[this.context[0]];
             return `${this.getCollection(collection)}` + (key == 'id' ? '' : `:${key}`);
