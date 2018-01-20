@@ -9,9 +9,7 @@ import {
 } from 'deep-object-diff'
 import flatten from '../flatten'
 
-const arrayMerge = (target, source, optionsArgument) => {
-    return source
-}
+const arrayMerge = (target, source, optionsArgument) => source
 
 class GraphQLEntity extends Entity {
     static queries() {
@@ -63,7 +61,7 @@ class GraphQLEntity extends Entity {
 
         let added = flatten(addedDiff(object, state)),
             updated = flatten(updatedDiff(object, state)),
-            deleted = Object.keys(state).length ? flatten(deletedDiff(object, state)) : {}
+            deleted = Object.keys(state).length ? flatten(deletedDiff(object, deepmerge(object, state, {arrayMerge}))) : {}
 
         delete deleted._id
 

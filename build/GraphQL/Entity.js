@@ -28,9 +28,7 @@ var _flatten2 = _interopRequireDefault(_flatten);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const arrayMerge = (target, source, optionsArgument) => {
-    return source;
-};
+const arrayMerge = (target, source, optionsArgument) => source;
 
 class GraphQLEntity extends _Entity2.default {
     static queries() {
@@ -68,7 +66,7 @@ class GraphQLEntity extends _Entity2.default {
 
         let added = (0, _flatten2.default)((0, _deepObjectDiff.addedDiff)(object, state)),
             updated = (0, _flatten2.default)((0, _deepObjectDiff.updatedDiff)(object, state)),
-            deleted = Object.keys(state).length ? (0, _flatten2.default)((0, _deepObjectDiff.deletedDiff)(object, state)) : {};
+            deleted = Object.keys(state).length ? (0, _flatten2.default)((0, _deepObjectDiff.deletedDiff)(object, (0, _deepmerge2.default)(object, state, { arrayMerge }))) : {};
 
         delete deleted._id;
 
