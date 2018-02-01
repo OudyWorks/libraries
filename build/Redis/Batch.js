@@ -50,33 +50,6 @@ class Batch {
         });
         return batchs.hset[key].load([field, value]);
     }
-    static hdel(key, field, client = 'default') {
-        if (!batchs.hdel) batchs.hdel = {};
-        if (!batchs.hdel[key]) batchs.hdel[key] = new _dataloader2.default(keys => new Promise(resolve => {
-            _Redis2.default.getClient(client).hdel(key, keys, () => resolve(keys));
-        }), {
-            cache: false
-        });
-        return batchs.hdel[key].load(field);
-    }
-    static sadd(key, value, client = 'default') {
-        if (!batchs.sadd) batchs.sadd = {};
-        if (!batchs.sadd[key]) batchs.sadd[key] = new _dataloader2.default(keys => new Promise(resolve => {
-            _Redis2.default.getClient(client).sadd(key, keys, () => resolve(keys));
-        }), {
-            cache: false
-        });
-        return batchs.sadd[key].load(value);
-    }
-    static srem(key, value, client = 'default') {
-        if (!batchs.srem) batchs.srem = {};
-        if (!batchs.srem[key]) batchs.srem[key] = new _dataloader2.default(keys => new Promise(resolve => {
-            _Redis2.default.getClient(client).srem(key, keys, () => resolve(keys));
-        }), {
-            cache: false
-        });
-        return batchs.srem[key].load(value);
-    }
     static sismember(key, value, client = 'default') {
         if (!batchs.sismember) batchs.sismember = {};
         if (!batchs.sismember[key]) batchs.sismember[key] = new _dataloader2.default(keys => new Promise(resolve => {
@@ -87,4 +60,21 @@ class Batch {
         return batchs.sismember[key].load(value);
     }
 }
+
+// commands without reply
+['hdel', 'sadd', 'srem', 'lpush', 'rpush'].forEach(command => {
+    Batch[command] = function (key, value, client = 'default') {
+
+        if (!batchs[command]) batchs[command] = {};
+
+        if (!batchs[command][key]) batchs[command][key] = new _dataloader2.default(keys => new Promise(resolve => {
+            _Redis2.default.getClient(client)[command](key, keys, () => resolve(keys));
+        }), {
+            cache: false
+        });
+
+        return batchs[command][key].load(value);
+    };
+});
+
 exports.default = Batch;
