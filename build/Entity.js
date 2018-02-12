@@ -30,11 +30,11 @@ class Entity {
 
         let emitter = new _events2.default();
 
-        this.on = emitter.on.bind(this);
-        this.once = emitter.once.bind(this);
-        this.emit = emitter.emit.bind(this);
-        this.remove = emitter.removeListener.bind(this);
-        this.prependListener = emitter.prependListener.bind(this);
+        this.on = emitter.on;
+        this.once = emitter.once;
+        this.emit = emitter.emit;
+        this.remove = emitter.removeListener;
+        this.prependListener = emitter.prependListener;
     }
 
     // Events
