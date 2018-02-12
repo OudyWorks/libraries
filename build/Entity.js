@@ -33,7 +33,7 @@ class Entity {
         this.on = emitter.on.bind(this);
         this.once = emitter.once.bind(this);
         this.emit = emitter.emit.bind(this);
-        this.remove = emitter.remove.bind(this);
+        this.remove = emitter.removeListener.bind(this);
         this.prependListener = emitter.prependListener.bind(this);
     }
 
@@ -48,7 +48,7 @@ class Entity {
         emitter.emit.apply(this, arguments);
     }
     static remove() {
-        emitter.remove.apply(this, arguments);
+        emitter.removeListener.apply(this, arguments);
     }
     static prependListener() {
         emitter.prependListener.apply(this, arguments);
