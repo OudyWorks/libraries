@@ -24,7 +24,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const emitter = new _events2.default();
 
-class Entity extends _events2.default {
+class Entity {
+
+    constructor() {
+
+        let emitter = new _events2.default();
+
+        this.on = emitter.on;
+        this.once = emitter.once;
+        this.emit = emitter.emit;
+        this.remove = emitter.removeListener;
+    }
+
     // Events
     static on() {
         emitter.on.apply(this, arguments);
@@ -34,6 +45,9 @@ class Entity extends _events2.default {
     }
     static emit() {
         emitter.emit.apply(this, arguments);
+    }
+    static remove() {
+        emitter.removeListener.apply(this, arguments);
     }
 
     // name in plural

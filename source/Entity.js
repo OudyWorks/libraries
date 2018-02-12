@@ -5,7 +5,19 @@ import Redis from './Redis'
 
 const emitter = new EventEmitter()
 
-class Entity extends EventEmitter  {
+class Entity {
+
+    constructor() {
+        
+        let emitter = new EventEmitter() 
+ 
+        this.on = emitter.on 
+        this.once = emitter.once 
+        this.emit = emitter.emit 
+        this.remove = emitter.removeListener 
+
+    }
+
     // Events
     static on() {
         emitter.on.apply(this, arguments)
@@ -15,6 +27,9 @@ class Entity extends EventEmitter  {
     }
     static emit() {
         emitter.emit.apply(this, arguments)
+    }
+    static remove() {
+        emitter.removeListener.apply(this, arguments)
     }
 
     // name in plural
