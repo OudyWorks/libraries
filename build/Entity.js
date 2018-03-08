@@ -33,7 +33,7 @@ class Entity {
         this.on = emitter.on;
         this.once = emitter.once;
         this.emit = emitter.emit;
-        this.remove = emitter.removeListener;
+        this.removeListener = emitter.removeListener;
     }
 
     // Events
@@ -46,7 +46,7 @@ class Entity {
     static emit() {
         emitter.emit.apply(this, arguments);
     }
-    static remove() {
+    static removeListener() {
         emitter.removeListener.apply(this, arguments);
     }
 
