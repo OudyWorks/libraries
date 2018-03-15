@@ -6,6 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _graphql = require('graphql');
 
+var _case = require('case');
+
+var _case2 = _interopRequireDefault(_case);
+
 var _Entity = require('./GraphQL/Entity');
 
 var _Entity2 = _interopRequireDefault(_Entity);
@@ -112,7 +116,7 @@ class GraphQL {
             type: new _graphql.GraphQLObjectType({
                 name: `${Config.name}Mutation`,
                 fields: {
-                    [Config.name.toLowerCase()]: {
+                    [_case2.default.camel(Config.name)]: {
                         type: Type
                     },
                     erred: {
@@ -130,7 +134,7 @@ class GraphQL {
                 }
             }),
             args: Object.assign(args, {
-                [Config.name.toLowerCase()]: {
+                [_case2.default.camel(Config.name)]: {
                     type: new _graphql.GraphQLNonNull(this.inputType(Type))
                 },
                 id: {

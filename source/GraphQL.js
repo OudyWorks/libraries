@@ -8,6 +8,7 @@ import {
     GraphQLNonNull,
     GraphQLInt
 } from 'graphql'
+import Case from 'case'
 
 import Entity from './GraphQL/Entity'
 
@@ -134,7 +135,7 @@ export default class GraphQL {
             type: new GraphQLObjectType({
                 name: `${Config.name}Mutation`,
                 fields: {
-                    [Config.name.toLowerCase()]: {
+                    [Case.camel(Config.name)]: {
                         type: Type
                     },
                     erred: {
@@ -154,7 +155,7 @@ export default class GraphQL {
             args: Object.assign(
                 args,
                 {
-                    [Config.name.toLowerCase()]: {
+                    [Case.camel(Config.name)]: {
                         type: new GraphQLNonNull(
                             this.inputType(Type)
                         )
